@@ -1,0 +1,15 @@
+node_modules/
+main.js
+*.zip
+.DS_Store
+preview/bundle.js
+preview/sheet.js
+preview/catalog.js
+preview/scene.js
+tools/test/*.js
+tools/test/*.html
+tools/test/out/
+dist/
+demo/dist/
+tools/media/gallery.js
+tools/media/gallery.html

@@ -1,0 +1,19 @@
+{
+	"name": "obsidian-planetarium",
+	"version": "0.5.0",
+	"description": "See your Obsidian vault as a universe: folders are suns, notes are planets orbiting them.",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"preview": "esbuild preview/preview.ts --bundle --outfile=preview/bundle.js && esbuild preview/sheet.ts --bundle --outfile=preview/sheet.js && esbuild preview/catalog.ts --bundle --outfile=preview/catalog.js && esbuild preview/scene.ts --bundle --outfile=preview/scene.js"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^20.0.0",
+		"esbuild": "^0.24.0",
+		"obsidian": "latest",
+		"tslib": "^2.6.0",
+		"typescript": "^5.4.0"
+	}
+}

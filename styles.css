@@ -1,0 +1,307 @@
+.workspace-leaf-content[data-type="solar-system-view"] .view-content.solar-graph-container {
+	padding: 0;
+	overflow: hidden;
+	position: relative;
+	background: #03040a;
+}
+
+.solar-graph-canvas {
+	display: block;
+	width: 100%;
+	height: 100%;
+	cursor: grab;
+	touch-action: none;
+}
+
+.solar-graph-canvas.is-hovering {
+	cursor: pointer;
+}
+
+.solar-graph-canvas.is-dragging {
+	cursor: grabbing;
+}
+
+.solar-overlay {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	font-family: var(--font-interface, sans-serif);
+}
+
+.solar-overlay > * {
+	pointer-events: auto;
+}
+
+.solar-toolbar {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	display: flex;
+	gap: 6px;
+	flex-wrap: wrap;
+	max-width: calc(100% - 20px);
+}
+
+.solar-input {
+	width: 210px;
+	max-width: 42vw;
+	padding: 5px 9px;
+	border-radius: 7px;
+	border: 1px solid rgba(180, 195, 255, 0.25);
+	background: rgba(8, 10, 24, 0.75);
+	color: #e8ebff;
+	font-size: 13px;
+	backdrop-filter: blur(4px);
+}
+
+.solar-input::placeholder {
+	color: rgba(220, 225, 255, 0.45);
+}
+
+.solar-results {
+	position: absolute;
+	top: 44px;
+	left: 10px;
+	width: 280px;
+	max-width: calc(100% - 20px);
+	display: none;
+	border-radius: 8px;
+	border: 1px solid rgba(180, 195, 255, 0.2);
+	background: rgba(8, 10, 24, 0.92);
+	overflow: hidden;
+}
+
+.solar-result {
+	padding: 6px 10px;
+	cursor: pointer;
+}
+
+.solar-result.is-active,
+.solar-result:hover {
+	background: rgba(120, 150, 255, 0.18);
+}
+
+.solar-result-label {
+	color: #eef0ff;
+	font-size: 13px;
+}
+
+.solar-result-sub {
+	color: rgba(220, 225, 255, 0.5);
+	font-size: 11px;
+}
+
+.solar-history {
+	position: absolute;
+	left: 50%;
+	bottom: 14px;
+	transform: translateX(-50%);
+	width: min(560px, calc(100% - 24px));
+	align-items: center;
+	gap: 8px;
+	padding: 6px 10px;
+	border-radius: 10px;
+	border: 1px solid rgba(180, 195, 255, 0.2);
+	background: rgba(8, 10, 24, 0.8);
+}
+
+.solar-range {
+	flex: 1;
+}
+
+.solar-date {
+	color: #e8ebff;
+	font-size: 12px;
+	min-width: 84px;
+	text-align: right;
+}
+
+.solar-button {
+	background: rgba(120, 150, 255, 0.15);
+	color: #e8ebff;
+	border: none;
+	border-radius: 6px;
+	padding: 3px 8px;
+	cursor: pointer;
+}
+
+.solar-card {
+	position: absolute;
+	width: 240px;
+	padding: 9px 11px;
+	border-radius: 9px;
+	border: 1px solid rgba(180, 195, 255, 0.22);
+	background: rgba(8, 10, 24, 0.9);
+	color: #e8ebff;
+	pointer-events: none;
+}
+
+.solar-card-title {
+	font-weight: 600;
+	font-size: 13px;
+}
+
+.solar-card-sub {
+	font-size: 11px;
+	color: rgba(220, 225, 255, 0.55);
+	margin-bottom: 5px;
+}
+
+.solar-card-body {
+	font-size: 12px;
+	line-height: 1.4;
+	color: rgba(232, 235, 255, 0.85);
+	max-height: 6.5em;
+	overflow: hidden;
+}
+
+.solar-card-tags {
+	margin-top: 6px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+}
+
+.solar-tag {
+	font-size: 11px;
+	padding: 1px 6px;
+	border-radius: 9px;
+	background: rgba(120, 150, 255, 0.2);
+}
+
+.solar-banner {
+	position: absolute;
+	top: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 4px 12px;
+	border-radius: 8px;
+	background: rgba(255, 170, 60, 0.18);
+	border: 1px solid rgba(255, 190, 90, 0.4);
+	color: #ffe2b8;
+	font-size: 12px;
+	pointer-events: none;
+}
+
+.solar-graph-container:focus {
+	outline: none;
+}
+
+/* Rarity on the card */
+.solar-card-rarity {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	margin: 2px 0 4px;
+	font-size: 11px;
+}
+
+.solar-tier {
+	padding: 1px 7px;
+	border-radius: 999px;
+	font-weight: 600;
+	font-size: 10.5px;
+	letter-spacing: 0.02em;
+	background: rgba(200, 210, 255, 0.14);
+	color: #dfe4ff;
+}
+
+.solar-tier.is-uncommon { background: rgba(110, 220, 150, 0.16); color: #a8f0c0; }
+.solar-tier.is-rare { background: rgba(100, 170, 255, 0.18); color: #a9d0ff; }
+.solar-tier.is-epic { background: rgba(190, 120, 255, 0.2); color: #dcb8ff; }
+.solar-tier.is-legendary { background: rgba(255, 180, 60, 0.22); color: #ffd58a; }
+.solar-tier.is-real-planet,
+.solar-tier.is-fiction-icon,
+.solar-tier.is-special { background: rgba(80, 230, 255, 0.2); color: #9ff0ff; }
+
+.solar-odds {
+	color: rgba(220, 225, 255, 0.7);
+}
+
+.solar-card-looks {
+	font-size: 11px;
+	line-height: 1.35;
+	color: rgba(220, 225, 255, 0.6);
+	margin-bottom: 5px;
+}
+
+/* Legend */
+.solar-legend {
+	position: absolute;
+	right: 12px;
+	top: 12px;
+	width: 300px;
+	max-height: calc(100% - 24px);
+	overflow-y: auto;
+	padding: 12px 14px;
+	border-radius: 10px;
+	border: 1px solid rgba(180, 195, 255, 0.22);
+	background: rgba(8, 10, 24, 0.92);
+	color: #e8ebff;
+	font-size: 12px;
+	pointer-events: auto;
+}
+
+.solar-legend-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+.solar-legend-title {
+	font-weight: 600;
+	font-size: 13px;
+}
+
+.solar-legend-row {
+	display: flex;
+	gap: 10px;
+	margin: 7px 0;
+}
+
+.solar-legend-icon {
+	flex: none;
+	width: 16px;
+	height: 16px;
+	margin-top: 1px;
+	border-radius: 50%;
+}
+
+.solar-legend-icon.is-sun { background: radial-gradient(circle, #fff6d8 0 30%, #ffb43c 55%, rgba(255, 150, 40, 0) 72%); }
+.solar-legend-icon.is-planet { background: radial-gradient(circle at 35% 35%, #9fd0ff, #2a5a9a 60%, #0a1830); }
+.solar-legend-icon.is-moon { width: 9px; height: 9px; margin: 4px 3px 0; background: radial-gradient(circle at 35% 35%, #d8d2c8, #5a544c); }
+.solar-legend-icon.is-rogue { background: radial-gradient(circle at 35% 35%, #8a8aa0, #2a2a3a 65%); opacity: 0.8; }
+.solar-legend-icon.is-glow { background: radial-gradient(circle, #6a90c0 0 35%, rgba(255, 220, 140, 0.8) 45%, rgba(255, 210, 120, 0) 72%); }
+.solar-legend-icon.is-lane { border-radius: 2px; height: 3px; margin-top: 7px; background: linear-gradient(90deg, #ffb46a, #b8d0ff, #ff8ad0); }
+.solar-legend-icon.is-here { border: 2px solid #6ee6ff; background: transparent; }
+.solar-legend-icon.is-birth { background: radial-gradient(circle, #fff 0 18%, rgba(200, 220, 255, 0.4) 40%, rgba(200, 220, 255, 0) 70%); }
+
+.solar-legend-name {
+	font-weight: 600;
+}
+
+.solar-legend-desc {
+	color: rgba(220, 225, 255, 0.65);
+	line-height: 1.4;
+}
+
+.solar-legend-sub {
+	margin: 12px 0 4px;
+	font-weight: 600;
+	color: #cfd6ff;
+}
+
+.solar-legend-key {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	margin: 3px 0;
+	color: rgba(220, 225, 255, 0.7);
+}
+
+.solar-legend-key kbd {
+	font-family: inherit;
+	font-size: 11px;
+	color: #e8ebff;
+}

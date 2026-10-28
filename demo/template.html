@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planetarium: live demo</title>
+<meta name="description" content="A live demo of Planetarium, an Obsidian plugin that shows your notes as a universe of suns and planets.">
+<style>
+/*STYLES*/
+:root { --font-interface: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif; }
+html, body { margin: 0; height: 100%; background: #000; color: #dfe6f3; font-family: var(--font-interface); overflow: hidden; }
+#demo-view { position: absolute; inset: 0; }
+.demo-bar { position: absolute; left: 0; right: 0; bottom: 14px; margin: 0 auto; width: fit-content; z-index: 30; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: center;
+  max-width: calc(100vw - 32px); box-sizing: border-box; padding: 8px 14px; border-radius: 12px; background: rgba(10, 14, 26, 0.82); border: 1px solid rgba(140, 160, 210, 0.25); font-size: 13px; backdrop-filter: blur(6px); }
+.demo-bar a { color: #9fd4ff; text-decoration: none; font-weight: 600; }
+.demo-bar a:hover { text-decoration: underline; }
+.demo-bar label { display: flex; gap: 6px; align-items: center; color: #aab4c8; }
+.demo-bar select, .demo-bar input { accent-color: #7fb8ff; }
+.demo-bar select { background: #121828; color: #dfe6f3; border: 1px solid #2c3550; border-radius: 6px; padding: 2px 4px; }
+.demo-title { font-weight: 700; color: #fff; }
+.demo-hint { position: absolute; left: 16px; right: 16px; bottom: 66px; z-index: 30; text-align: center; font-size: 13px; color: #c9d3e6; text-shadow: 0 0 6px #000, 0 0 3px #000;
+  pointer-events: none; animation: demo-fade 1s ease 12s forwards; }
+@keyframes demo-fade { to { opacity: 0; } }
+#demo-actions { position: absolute; top: 10px; right: 10px; z-index: 30; display: flex; gap: 4px; }
+.demo-action, #demo-hide { background: rgba(10, 14, 26, 0.82); color: #cbd5e6; border: 1px solid rgba(140, 160, 210, 0.25); border-radius: 8px; padding: 6px 7px; cursor: pointer; display: flex; }
+.demo-action:hover, #demo-hide:hover { color: #fff; border-color: rgba(160, 200, 255, 0.6); }
+#demo-hide { padding: 3px 8px; font-size: 12px; }
+.demo-notice { position: fixed; top: 56px; right: 14px; z-index: 40; padding: 8px 12px; border-radius: 8px; background: rgba(20, 26, 44, 0.95); border: 1px solid #34406a; font-size: 13px; }
+body.demo-bare .demo-bar > :not(#demo-hide), body.demo-bare .demo-hint { display: none; }
+@media (max-width: 760px) {
+  .demo-bar { gap: 8px; font-size: 12px; }
+  .demo-speed, .demo-hint { display: none !important; }
+  .solar-banner, .solar-filter { display: none !important; }
+  .solar-search { width: 150px !important; }
+  #demo-actions { top: 46px; }
+}
+</style>
+</head>
+<body>
+<div id="demo-view" class="view-content"></div>
+<div id="demo-actions"></div>
+<div class="demo-hint">Every folder is a sun, every note a planet · drag to move · scroll to zoom · hover a planet · double-click a sun · <b>?</b> explains everything</div>
+<div class="demo-bar">
+  <span class="demo-title">☀ Planetarium</span>
+  <label>Nebula <select id="demo-nebula"></select></label>
+  <label>Planet size <input id="demo-size" type="range" min="0.5" max="3" step="0.1"></label>
+  <label class="demo-speed">Orbit speed <input id="demo-speed" type="range" min="0" max="3" step="0.1"></label>
+  <a href="https://github.com/Unscathering/Planetarium">Get the plugin</a>
+  <button id="demo-hide" title="Hide or show this bar">hide</button>
+</div>
+<script>
+/*SCRIPT*/
+</script>
+</body>
+</html>
