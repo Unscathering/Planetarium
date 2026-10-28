@@ -16,8 +16,6 @@ const plugin = { settings, saveSettings: async () => {} };
 const el = document.getElementById("demo-view")!;
 const view = new SolarSystemView({ el, app } as any, plugin as any);
 view.demo = true;
-const scale = Number(new URLSearchParams(location.search).get("scale"));
-if (scale > 0) view.randomScale = Math.min(4, scale);
 (window as any).view = view;
 (window as any).plugin = plugin;
 void view.onOpen().then(() => {

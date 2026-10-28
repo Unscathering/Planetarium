@@ -8,9 +8,6 @@ const FOLDERS = [
 	"Projects", "Journal", "Ideas", "Reading", "Work", "Recipes", "Travel", "Archive", "School", "Music",
 	"Health", "Finance", "Games", "Research", "Writing", "Code", "Garden", "People", "Meetings", "Inbox",
 	"Photos", "Lists", "Quotes", "Dreams", "Fitness", "Movies", "Languages", "Home", "Clients", "Hobbies",
-	"Poetry", "Science", "History", "Design", "Startup", "Podcasts", "Art", "Cooking", "Philosophy", "Chess",
-	"Astronomy", "Courses", "Events", "Family", "Friends", "Habits", "Journaling", "Knowledge", "Maps", "Notes",
-	"Plants", "Products", "Recordings", "Sketches", "Sports", "Stories", "Tools", "Trips", "Videos", "Wiki",
 ];
 const TAGS = ["#idea", "#todo", "#draft", "#book", "#important", "#question", "#done", "#reference", "#person", "#project"];
 const WORDS = ["Alpha", "Notes", "Plan", "Review", "Draft", "Summary", "Thoughts", "Log", "List", "Guide", "Sketch", "Outline"];
@@ -20,11 +17,10 @@ export interface FakeVault {
 	links: Record<string, Record<string, number>>;
 }
 
-/** `scale` above 1 makes bigger universes: more folders and more notes in each. */
-export function randomVault(seed: number, scale = 1): FakeVault {
+export function randomVault(seed: number): FakeVault {
 	const rng = makeRng(seed);
 	const pick = <T>(list: T[]): T => list[Math.floor(rng() * list.length)];
-	const folderCount = Math.min(FOLDERS.length, Math.round((3 + Math.floor(rng() * 20)) * scale));
+	const folderCount = 3 + Math.floor(rng() * 20);
 	const folders = [...FOLDERS].sort(() => rng() - 0.5).slice(0, folderCount);
 	const now = Date.now();
 	const notes: NoteInput[] = [];
@@ -38,7 +34,7 @@ export function randomVault(seed: number, scale = 1): FakeVault {
 	};
 	for (const folder of folders) {
 		// Mostly small folders, now and then a big one.
-		const count = 2 + Math.floor(Math.pow(rng(), 2.2) * 90 * Math.sqrt(scale));
+		const count = 2 + Math.floor(Math.pow(rng(), 2.2) * 90);
 		for (let i = 0; i < count; i++) add(folder, i);
 	}
 	const loose = Math.floor(rng() * 8);
