@@ -216,6 +216,8 @@ export class SolarSystemView extends ItemView {
 	private locateAction: HTMLElement | null = null;
 	/** Running as the web demo, outside Obsidian: random universes only, no real notes. */
 	demo = false;
+	/** How big random universes are (1 = normal); the demo and trailer use bigger ones. */
+	randomScale = 1;
 	private backAction: HTMLElement | null = null;
 
 	constructor(leaf: WorkspaceLeaf, plugin: SolarSystemPlugin) {
@@ -370,7 +372,7 @@ export class SolarSystemView extends ItemView {
 	}
 
 	rebuild() {
-		const data = this.mode === "random" ? randomVault(this.randomSeed) : this.vaultNotes();
+		const data = this.mode === "random" ? randomVault(this.randomSeed, this.randomScale) : this.vaultNotes();
 		const universe = buildUniverse(data.notes, data.links, {
 			rogues: this.settings.rogues,
 			moons: this.settings.childMoons,
