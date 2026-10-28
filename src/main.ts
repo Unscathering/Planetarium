@@ -10,9 +10,9 @@ export default class SolarSystemPlugin extends Plugin {
 
 		this.registerView(VIEW_TYPE_SOLAR, (leaf) => new SolarSystemView(leaf, this));
 
-		this.addRibbonIcon("sun", "Open Planetarium", () => this.activateView());
+		this.addRibbonIcon("sun", "Open the universe", () => this.activateView());
 		this.addCommand({
-			id: "open-planetarium",
+			id: "open",
 			name: "Open the universe",
 			callback: () => this.activateView(),
 		});
@@ -41,12 +41,13 @@ export default class SolarSystemPlugin extends Plugin {
 			leaf = workspace.getLeaf("tab");
 			await leaf.setViewState({ type: VIEW_TYPE_SOLAR, active: true });
 		}
-		workspace.revealLeaf(leaf);
+		await workspace.revealLeaf(leaf);
 		return leaf.view instanceof SolarSystemView ? leaf.view : null;
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		const saved = (await this.loadData()) as Partial<SolarSystemSettings> | null;
+		this.settings = { ...DEFAULT_SETTINGS, ...saved };
 	}
 
 	/** Saves settings and lets open views react; most settings are read every frame anyway. */

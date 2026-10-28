@@ -64,7 +64,6 @@
 	left: 10px;
 	width: 280px;
 	max-width: calc(100% - 20px);
-	display: none;
 	border-radius: 8px;
 	border: 1px solid rgba(180, 195, 255, 0.2);
 	background: rgba(8, 10, 24, 0.92);
@@ -125,8 +124,15 @@
 	cursor: pointer;
 }
 
+/* Shown and hidden from the code by adding or removing this class. */
+.solar-hidden {
+	display: none !important;
+}
+
 .solar-card {
 	position: absolute;
+	left: var(--solar-card-left, 0);
+	top: var(--solar-card-top, 0);
 	width: 240px;
 	padding: 9px 11px;
 	border-radius: 9px;

@@ -26,11 +26,15 @@ export interface OverlayHandlers {
 }
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls: string, parent: HTMLElement): HTMLElementTagNameMap[K] {
-	const node = document.createElement(tag);
-	node.className = cls;
-	parent.appendChild(node);
-	return node;
+	return parent.createEl(tag, { cls });
 }
+
+/** Shows or hides an element with the `solar-hidden` class (see styles.css). */
+function show(node: HTMLElement, visible: boolean) {
+	node.toggleClass("solar-hidden", !visible);
+}
+
+const isShown = (node: HTMLElement) => !node.hasClass("solar-hidden");
 
 export class Overlay {
 	readonly root: HTMLElement;
@@ -58,6 +62,7 @@ export class Overlay {
 		this.filter.type = "search";
 		this.filter.placeholder = "Filter: #tag, folder or name";
 		this.results = el("div", "solar-results", this.root);
+		show(this.results, false);
 
 		this.search.addEventListener("input", () => this.refreshResults());
 		this.search.addEventListener("keydown", (e) => this.onSearchKey(e));
@@ -87,18 +92,18 @@ export class Overlay {
 		close.textContent = "✕";
 		close.title = "Leave history mode";
 		close.addEventListener("click", () => this.handlers.closeHistory());
-		this.history.style.display = "none";
+		show(this.history, false);
 
 		this.card = el("div", "solar-card", this.root);
-		this.card.style.display = "none";
+		show(this.card, false);
 		this.banner = el("div", "solar-banner", this.root);
-		this.banner.style.display = "none";
+		show(this.banner, false);
 		this.legend = this.buildLegend();
 	}
 
 	private buildLegend(): HTMLElement {
 		const box = el("div", "solar-legend", this.root);
-		box.style.display = "none";
+		show(box, false);
 		const head = el("div", "solar-legend-head", box);
 		el("span", "solar-legend-title", head).textContent = "What you are looking at";
 		const close = el("button", "solar-button", head);
@@ -124,7 +129,7 @@ export class Overlay {
 		}
 		el("div", "solar-legend-sub", box).textContent = "Rarity";
 		el("div", "solar-legend-desc", box).textContent =
-			"Common, Uncommon, Rare, Epic and Legendary come from the odds of rolling a planet's exact traits. Real planets and fiction icons are special finds.";
+			"Common, uncommon, rare, epic and legendary come from the odds of rolling a planet's exact traits. Real planets and fiction icons are special finds.";
 		el("div", "solar-legend-sub", box).textContent = "Controls";
 		const keys: Array<[string, string]> = [
 			["Drag / scroll", "Move around / zoom"],
@@ -144,9 +149,8 @@ export class Overlay {
 		return box;
 	}
 
-	toggleLegend(show?: boolean) {
-		const visible = show ?? this.legend.style.display === "none";
-		this.legend.style.display = visible ? "block" : "none";
+	toggleLegend(visible?: boolean) {
+		show(this.legend, visible ?? !isShown(this.legend));
 	}
 
 	/** True while the person is typing in one of the boxes, so keyboard shortcuts stay out of the way. */
@@ -168,12 +172,9 @@ export class Overlay {
 	}
 
 	private renderResults() {
-		this.results.innerHTML = "";
-		if (this.items.length === 0) {
-			this.results.style.display = "none";
-			return;
-		}
-		this.results.style.display = "block";
+		this.results.empty();
+		show(this.results, this.items.length > 0);
+		if (this.items.length === 0) return;
 		this.items.forEach((item, i) => {
 			const row = el("div", i === this.active ? "solar-result is-active" : "solar-result", this.results);
 			el("div", "solar-result-label", row).textContent = item.label;
@@ -210,11 +211,11 @@ export class Overlay {
 	}
 
 	private hideResults() {
-		this.results.style.display = "none";
+		show(this.results, false);
 	}
 
 	setHistoryVisible(visible: boolean) {
-		this.history.style.display = visible ? "flex" : "none";
+		show(this.history, visible);
 	}
 
 	setHistory(fraction: number, label: string, playing: boolean) {
@@ -224,7 +225,7 @@ export class Overlay {
 	}
 
 	showCard(title: string, sub: string, body: string, tags: string[], rarity?: CardRarity) {
-		this.card.innerHTML = "";
+		this.card.empty();
 		el("div", "solar-card-title", this.card).textContent = title;
 		el("div", "solar-card-sub", this.card).textContent = sub;
 		if (rarity) {
@@ -238,25 +239,24 @@ export class Overlay {
 			const row = el("div", "solar-card-tags", this.card);
 			for (const t of tags) el("span", "solar-tag", row).textContent = t;
 		}
-		this.card.style.display = "block";
+		show(this.card, true);
 	}
 
 	/** Keeps the card next to a moving planet, inside the view. */
 	moveCard(x: number, y: number, width: number, height: number) {
-		if (this.card.style.display === "none") return;
+		if (!isShown(this.card)) return;
 		const w = this.card.offsetWidth || 240, h = this.card.offsetHeight || 80;
 		const left = x + 18 + w > width ? x - 18 - w : x + 18;
 		const top = Math.min(Math.max(8, y - h / 2), height - h - 8);
-		this.card.style.left = `${Math.max(8, left)}px`;
-		this.card.style.top = `${top}px`;
+		this.card.setCssProps({ "--solar-card-left": `${Math.max(8, left)}px`, "--solar-card-top": `${top}px` });
 	}
 
 	hideCard() {
-		this.card.style.display = "none";
+		show(this.card, false);
 	}
 
 	setBanner(text: string | null) {
-		this.banner.style.display = text ? "block" : "none";
+		show(this.banner, !!text);
 		this.banner.textContent = text ?? "";
 	}
 }

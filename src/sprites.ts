@@ -88,10 +88,10 @@ export class ImageCache<T> {
 }
 
 function trim<T>(map: Map<string, T>, max: number) {
-	while (map.size > max) {
-		const oldest = map.keys().next().value;
-		if (oldest === undefined) break;
-		map.delete(oldest);
+	// Maps keep insertion order, so the first keys are the oldest.
+	for (const key of map.keys()) {
+		if (map.size <= max) break;
+		map.delete(key);
 	}
 }
 

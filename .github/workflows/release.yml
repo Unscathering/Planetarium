@@ -8,6 +8,8 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 
 jobs:
   release:
@@ -20,6 +22,13 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      # Signed proof that these files were built from this repository.
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
       - name: Create the release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -30,6 +39,6 @@ jobs:
           # Works whether the release was made on the website or not: create it if
           # it is missing, then attach (or replace) the files.
           gh release view "${{ github.ref_name }}" >/dev/null 2>&1 || \
-            gh release create "${{ github.ref_name }}" --title "${{ github.ref_name }}" --generate-notes
+            gh release create "${{ github.ref_name }}" --title "Planetarium ${{ github.ref_name }}" --generate-notes
           gh release upload "${{ github.ref_name }}" --clobber \
             main.js manifest.json styles.css planetarium-${{ github.ref_name }}.zip

@@ -1,5 +1,6 @@
 // Gallery images for the README: one planet of each kind, and the rare finds.
 // Built and captured by tools/media/record.cjs.
+import "../../preview/dom";
 import { PlanetSpec, PlanetType, Vec3, drawPlanet, generatePlanet } from "../../src/planets/planet";
 
 const LIGHT: Vec3 = { x: -0.75, y: -0.35, z: 0.58 };

@@ -87,6 +87,22 @@ It was called "Solar System Graph" until 0.5.0. Code names like
   planets|extras|stars` shows every trait. Saved previews live in
   `preview/sheets/`.
 
+## Obsidian's review rules
+
+The community directory runs Obsidian's checker (`eslint-plugin-obsidianmd`,
+recommended config, type-checked) on every release. Keep it at zero errors:
+- Show and hide elements with the `solar-hidden` class (`toggleClass`), never
+  `el.style.display = "..."`; pass changing values through `setCssProps` and
+  CSS variables (the hover card's position does this).
+- No `innerHTML`; clear with `empty()`.
+- Make elements and canvases with Obsidian's `createEl`. Plain pages get a
+  stand-in: `preview/dom.ts`, `tools/test/obsidian-mock.ts`,
+  `demo/obsidian-shim.ts`.
+- `minAppVersion` is 1.7.2 (needed for `await workspace.revealLeaf`); check an
+  API's `@since` before using it.
+- Still open (a warning only): the declarative settings API
+  (`getSettingDefinitions`, Obsidian 1.13+).
+
 ## Web demo and README media
 
 - `node demo/build.mjs` builds the web demo (the real view on a plain page,
@@ -119,7 +135,7 @@ It was called "Solar System Graph" until 0.5.0. Code names like
 
 ## Status
 
-- Version 0.5.0. About 1.13 quadrillion planet combinations; suns are 1,000
+- Version 0.5.1. About 1.13 quadrillion planet combinations; suns are 1,000
   kinds of star and 216 black holes.
 - Done: the plugin, far-view overhaul (nebula, lanes, bloom, trails, labels),
   smooth lighting and workers, moons and features, realism pass, the dead,

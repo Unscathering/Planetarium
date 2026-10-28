@@ -90,7 +90,7 @@ function coronaColor(spec: StarSpec, alpha: number, light = 0.62): string {
 }
 
 function pixelsToCanvas(size: number, pixels: Uint8ClampedArray): HTMLCanvasElement {
-	const canvas = document.createElement("canvas");
+	const canvas = createEl("canvas");
 	canvas.width = canvas.height = size;
 	const ctx = canvas.getContext("2d");
 	if (ctx) {
@@ -513,7 +513,7 @@ function glowLayer(ctx: CanvasRenderingContext2D, cx: number, cy: number, r0: nu
 
 /** White-hot disc: near-white center, the star's color toward the edge, and a soft edge. */
 function renderHotTexture(spec: StarSpec, size: number, smooth: boolean): HTMLCanvasElement {
-	const canvas = document.createElement("canvas");
+	const canvas = createEl("canvas");
 	canvas.width = canvas.height = size;
 	const ctx = canvas.getContext("2d");
 	if (!ctx) return canvas;

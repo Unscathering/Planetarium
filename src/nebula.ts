@@ -69,7 +69,7 @@ export function computeNebulaPixels(job: NebulaJob): Uint8ClampedArray {
 	// Each octave is turned a little, so the noise's square grid never shows as straight edges.
 	const ROT = 0.62, cr = Math.cos(ROT), sr = Math.sin(ROT);
 	const n = {
-		noise: base3.noise,
+		noise: (x: number, y: number, z: number) => base3.noise(x, y, z),
 		fbm(x: number, y: number, z: number, octaves: number) {
 			let sum = 0, amp = 0.5, norm = 0;
 			for (let i = 0; i < octaves; i++) {

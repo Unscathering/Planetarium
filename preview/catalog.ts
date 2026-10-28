@@ -1,6 +1,7 @@
 // A labelled catalogue of every planet trait, one section per category.
 // Build with `npm run preview`, then open preview/catalog.html?part=planets,
 // ?part=extras or ?part=stars.
+import "./dom";
 import {
 	ALL_TYPES,
 	Atmosphere,

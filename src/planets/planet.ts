@@ -262,7 +262,7 @@ export interface SphereImages {
 }
 
 function pixelsToCanvas(size: number, pixels: Uint8ClampedArray): HTMLCanvasElement {
-	const canvas = document.createElement("canvas");
+	const canvas = createEl("canvas");
 	canvas.width = canvas.height = size;
 	const ctx = canvas.getContext("2d");
 	if (ctx) {
@@ -346,7 +346,7 @@ function scratch(which: "a" | "b", size: number): CanvasRenderingContext2D | nul
 	const key = which + side;
 	let ctx = scratches.get(key);
 	if (ctx === undefined) {
-		const c = document.createElement("canvas");
+		const c = createEl("canvas");
 		c.width = c.height = side;
 		ctx = c.getContext("2d");
 		scratches.set(key, ctx);
@@ -481,7 +481,7 @@ export function drawAtmosphereGlow(ctx: CanvasRenderingContext2D, spec: PlanetSp
 	const key = `${c[0] | 0},${c[1] | 0},${c[2] | 0}|${reach}|${strength}`;
 	let sprite = atmoCache.get(key);
 	if (!sprite) {
-		sprite = document.createElement("canvas");
+		sprite = createEl("canvas");
 		const S = 128;
 		sprite.width = sprite.height = S;
 		const sctx = sprite.getContext("2d");

@@ -27,7 +27,7 @@ export class WorkerPool {
 			this.url = URL.createObjectURL(new Blob([source], { type: "text/javascript" }));
 			for (let i = 0; i < count; i++) {
 				const w = new Worker(this.url);
-				w.onmessage = (e) => this.finish(w, e.data);
+				w.onmessage = (e: MessageEvent<{ id: number }>) => this.finish(w, e.data);
 				w.onerror = (e) => {
 					// A job that throws is dropped; the worker carries on with the next one.
 					e.preventDefault();
@@ -55,7 +55,7 @@ export class WorkerPool {
 	}
 
 	submit<R>(job: Record<string, unknown>, done: (result: R) => void, drop: () => void) {
-		this.queue.push({ job, done: done as (r: never) => void, drop });
+		this.queue.push({ job, done, drop });
 		while (this.queue.length > this.maxQueue) this.queue.shift()?.drop();
 		this.pump();
 	}

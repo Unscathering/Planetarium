@@ -1,5 +1,6 @@
 // Draws a row of sample planets so their look can be checked in a browser.
 // Build with `npm run preview`, then open preview/index.html.
+import "./dom";
 import { PlanetSpec, Vec3, describePlanet, drawPlanet, generatePlanet } from "../src/planets/planet";
 import { hashString, makeRng } from "../src/planets/noise";
 

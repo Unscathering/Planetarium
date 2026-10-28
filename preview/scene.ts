@@ -1,5 +1,6 @@
 // Larger previews: ?part=blackholes shows big black holes, ?part=system shows
 // a sun with orbiting planets lit from the sun's direction.
+import "./dom";
 import { Vec3, describePlanet, drawPlanet, generatePlanet, PlanetSpec } from "../src/planets/planet";
 import { Orbit, generateOrbits, orbitPath, orbitPosition } from "../src/planets/orbit";
 import { hashString, makeRng } from "../src/planets/noise";

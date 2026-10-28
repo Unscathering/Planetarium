@@ -80,12 +80,6 @@ function randomOnSphere(rng: () => number): Vec3 {
 	return { x: r * Math.cos(a), y: r * Math.sin(a), z };
 }
 
-function cellHash(a: number, b: number, seed: number): number {
-	let h = Math.imul(a | 0, 374761393) ^ Math.imul(b | 0, 668265263) ^ seed;
-	h = Math.imul(h ^ (h >>> 13), 1274126177);
-	return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
-}
-
 /** A random point on the side of the planet that faces the viewer, at most `maxR` from the center. */
 function visibleSpot(rng: () => number, maxR: number): Vec3 {
 	const a = rng() * Math.PI * 2, d = Math.sqrt(rng()) * maxR;
@@ -1020,8 +1014,6 @@ export function sampleSurface(P: Prepared, x: number, y: number, z: number, lat:
 
 	if (spec.features.length > 0) applyFeatures(P, x, y, z, S);
 }
-
-const ASH: RGB = [58, 51, 47];
 
 /** Dead worlds: nothing lives here any more. Cold crust, ash and dust, and sometimes fire beneath. */
 function deadWorld(P: Prepared, x: number, y: number, z: number, lat: number, S: Surface) {

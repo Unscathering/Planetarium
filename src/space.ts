@@ -43,7 +43,7 @@ const STAR_TINTS: RGB[] = [
 ];
 
 function tile(seed: number, count: number, minSize: number, maxSize: number, minAlpha: number, maxAlpha: number, soft: boolean): HTMLCanvasElement {
-	const c = document.createElement("canvas");
+	const c = createEl("canvas");
 	c.width = c.height = TILE;
 	const ctx = c.getContext("2d");
 	if (!ctx) return c;
@@ -202,7 +202,7 @@ export class Starfield {
 		const key = `${Math.round(w)}x${Math.round(h)}`;
 		if (!this.vignette || this.vignetteSize !== key) {
 			// Small and stretched: a vignette is perfectly smooth, so a low resolution is invisible.
-			const c = document.createElement("canvas");
+			const c = createEl("canvas");
 			c.width = 256;
 			c.height = Math.max(32, Math.round((256 * h) / Math.max(1, w)));
 			const vctx = c.getContext("2d");
@@ -225,7 +225,7 @@ let glow: HTMLCanvasElement | null = null;
 /** A white soft dot: tinted pulses, star twinkles and meteor heads. */
 export function glowSprite(): HTMLCanvasElement {
 	if (glow) return glow;
-	glow = document.createElement("canvas");
+	glow = createEl("canvas");
 	const S = 64;
 	glow.width = glow.height = S;
 	const ctx = glow.getContext("2d");
@@ -246,7 +246,7 @@ let spikes: HTMLCanvasElement | null = null;
 /** Four thin rays, like light caught in a telescope. */
 export function spikeSprite(): HTMLCanvasElement {
 	if (spikes) return spikes;
-	spikes = document.createElement("canvas");
+	spikes = createEl("canvas");
 	const S = 128;
 	spikes.width = spikes.height = S;
 	const ctx = spikes.getContext("2d");
@@ -284,7 +284,7 @@ export function bloomSprite(c: RGB): HTMLCanvasElement {
 	const key = `${c[0] | 0},${c[1] | 0},${c[2] | 0}`;
 	let s = tinted.get(key);
 	if (s) return s;
-	s = document.createElement("canvas");
+	s = createEl("canvas");
 	const S = 128;
 	s.width = s.height = S;
 	const ctx = s.getContext("2d");

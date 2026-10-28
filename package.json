@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-planetarium",
-	"version": "0.5.0",
+	"version": "0.5.1",
 	"description": "See your Obsidian vault as a universe: folders are suns, notes are planets orbiting them.",
 	"main": "main.js",
 	"scripts": {

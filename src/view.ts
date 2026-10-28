@@ -34,7 +34,7 @@ import {
 	surfaceKey,
 	textureSize,
 } from "./planets/planet";
-import { CORONA_REACH, StarSpec, SunSpec, describeSun, drawBlackHole, drawStar, drawStarAura, sunRarity, sunTint } from "./planets/star";
+import { CORONA_REACH, SunSpec, describeSun, drawBlackHole, drawStar, drawStarAura, sunRarity, sunTint } from "./planets/star";
 
 export const VIEW_TYPE_SOLAR = "planetarium-view";
 
@@ -301,11 +301,11 @@ export class SolarSystemView extends ItemView {
 		this.resize();
 		this.rebuild();
 		this.lastTime = performance.now();
-		this.frame = requestAnimationFrame(this.tick);
+		this.frame = window.requestAnimationFrame(this.tick);
 	}
 
 	async onClose() {
-		cancelAnimationFrame(this.frame);
+		window.cancelAnimationFrame(this.frame);
 		this.resizeObserver?.disconnect();
 		if (this.rebuildTimer !== null) window.clearTimeout(this.rebuildTimer);
 		if (this.cardTimer !== null) window.clearTimeout(this.cardTimer);
@@ -345,9 +345,9 @@ export class SolarSystemView extends ItemView {
 	}
 
 	private updateActions() {
-		if (this.diceAction) this.diceAction.style.display = this.settings.devMode || this.demo ? "" : "none";
-		if (this.backAction) this.backAction.style.display = this.mode === "random" && !this.demo ? "" : "none";
-		if (this.locateAction) this.locateAction.style.display = this.demo ? "none" : "";
+		this.diceAction?.toggleClass("solar-hidden", !(this.settings.devMode || this.demo));
+		this.backAction?.toggleClass("solar-hidden", !(this.mode === "random" && !this.demo));
+		this.locateAction?.toggleClass("solar-hidden", this.demo);
 	}
 
 	// -------------------------------------------------------------------
@@ -595,7 +595,7 @@ export class SolarSystemView extends ItemView {
 	private tick = (now: number) => {
 		// Battery saver draws at most 30 frames a second.
 		if (this.settings.performance === "battery" && now - this.lastFrameAt < 31) {
-			this.frame = requestAnimationFrame(this.tick);
+			this.frame = window.requestAnimationFrame(this.tick);
 			return;
 		}
 		this.lastFrameAt = now;
@@ -655,7 +655,7 @@ export class SolarSystemView extends ItemView {
 		this.textures.process(FRAME_BUDGET);
 		this.ringSprites.process(FRAME_BUDGET / 3);
 		this.suns.process(this.intro?.start === null ? 30 : FRAME_BUDGET);
-		this.frame = requestAnimationFrame(this.tick);
+		this.frame = window.requestAnimationFrame(this.tick);
 	};
 
 	private toScreenX(wx: number) {
@@ -955,7 +955,7 @@ export class SolarSystemView extends ItemView {
 		let bd = this.backdrop;
 		const pw = Math.round(w * dpr), ph = Math.round(h * dpr);
 		if (!bd) {
-			const canvas = document.createElement("canvas");
+			const canvas = createEl("canvas");
 			bd = this.backdrop = { canvas, ctx: canvas.getContext("2d"), key: "" };
 		}
 		const bctx = bd.ctx;
@@ -1262,7 +1262,7 @@ export class SolarSystemView extends ItemView {
 		const base = `${b.spec.seed}|${b.spec.rings}|${b.spec.ringColor}|${b.spec.ringAngle}|${b.spec.axialTilt.toFixed(3)}|${b.spec.features.join(",")}`;
 		return this.ringSprites.get(`${base}|${bucket}`, base, () => {
 			const make = (half: "back" | "front") => {
-				const c = document.createElement("canvas");
+				const c = createEl("canvas");
 				c.width = c.height = Math.ceil(bucket * ringReach(b.spec) * 2);
 				const cctx = c.getContext("2d", { willReadFrequently: true });
 				if (!cctx) return null;
@@ -1278,7 +1278,7 @@ export class SolarSystemView extends ItemView {
 		const k = Math.round(clamp(inner, 0, 0.95) * 20);
 		let c = this.glowSprites.get(k);
 		if (!c) {
-			c = document.createElement("canvas");
+			c = createEl("canvas");
 			const S = 96;
 			c.width = c.height = S;
 			const g2 = c.getContext("2d");
@@ -1429,7 +1429,7 @@ export class SolarSystemView extends ItemView {
 		if (sun.kind === "star") {
 			// The cached star image covers 3.3 radii; the faint outer aura is drawn live.
 			const compose = (layers?: { disc: HTMLCanvasElement; corona: HTMLCanvasElement }) => {
-				const c = document.createElement("canvas");
+				const c = createEl("canvas");
 				c.width = c.height = Math.ceil(bucket * 3.3 * 2);
 				const cctx = c.getContext("2d");
 				if (cctx) drawStar(cctx, sun.star, c.width / 2, c.height / 2, bucket, false, layers);
@@ -1442,14 +1442,14 @@ export class SolarSystemView extends ItemView {
 			return this.suns.request(key, base, (resolve, cancel) => {
 				const discSize = Math.max(16, bucket * 2), coronaSize = Math.ceil(bucket * CORONA_REACH * 2);
 				pool.submit<{ disc: Uint8ClampedArray; corona: Uint8ClampedArray }>(
-					{ kind: "star", spec: sun.star as StarSpec, discSize, coronaSize },
+					{ kind: "star", spec: sun.star, discSize, coronaSize },
 					(res) => resolve(compose({ disc: pixelCanvas(discSize, res.disc), corona: pixelCanvas(coronaSize, res.corona) })),
 					cancel
 				);
 			});
 		}
 		return this.suns.get(`hole|${si}|${bucket}`, `hole|${si}`, () => {
-			const c = document.createElement("canvas");
+			const c = createEl("canvas");
 			c.width = c.height = Math.ceil(bucket * 6.6 * 2);
 			const cctx = c.getContext("2d");
 			if (cctx) drawBlackHole(cctx, sun.hole, c.width / 2, c.height / 2, bucket);
@@ -1948,7 +1948,7 @@ function smoothstep(a: number, b: number, v: number): number {
 }
 
 function pixelCanvas(size: number, pixels: Uint8ClampedArray, height = size): HTMLCanvasElement {
-	const c = document.createElement("canvas");
+	const c = createEl("canvas");
 	c.width = size;
 	c.height = height;
 	const ctx = c.getContext("2d");
@@ -1987,7 +1987,7 @@ function cropSprite(c: HTMLCanvasElement, ctx: CanvasRenderingContext2D): Sprite
 	y0 = Math.max(0, y0 - 1);
 	x1 = Math.min(w - 1, x1 + 1);
 	y1 = Math.min(h - 1, y1 + 1);
-	const out = document.createElement("canvas");
+	const out = createEl("canvas");
 	out.width = x1 - x0 + 1;
 	out.height = y1 - y0 + 1;
 	out.getContext("2d")?.drawImage(c, x0, y0, out.width, out.height, 0, 0, out.width, out.height);

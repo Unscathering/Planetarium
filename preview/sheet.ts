@@ -5,6 +5,7 @@
 //   ?mode=bodies&type=ice   one type only
 //   ?mode=details           every type with each of its surface details
 //   ?mode=random&n=50       fully random planets with all extras
+import "./dom";
 import {
 	Detail,
 	PLANET_TYPES,

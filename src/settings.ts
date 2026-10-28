@@ -98,7 +98,6 @@ export class SolarSystemSettingTab extends PluginSettingTab {
 				s
 					.setLimits(min, max, step)
 					.setValue(this.plugin.settings[key])
-					.setDynamicTooltip()
 					.onChange(async (value) => {
 						this.plugin.settings[key] = value;
 						await this.plugin.saveSettings(key);

@@ -6,6 +6,9 @@ P.empty = function () { this.innerHTML = ""; };
 P.addClass = function (c: string) { this.classList.add(c); };
 P.removeClass = function (c: string) { this.classList.remove(c); };
 P.toggleClass = function (c: string, v: boolean) { this.classList.toggle(c, v); };
+P.hasClass = function (c: string) { return this.classList.contains(c); };
+P.setCssProps = function (props: Record<string, string>) { for (const k in props) this.style.setProperty(k, props[k]); };
+(window as any).createEl = (tag: string) => document.createElement(tag);
 P.setText = function (t: string) { this.textContent = t; };
 P.createEl = function (tag: string, o: any) {
 	const el = document.createElement(tag);
